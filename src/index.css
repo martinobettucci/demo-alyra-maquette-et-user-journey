@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+@theme {
+  --color-alumni-blue: #26528C;
+  --color-alumni-petrol: #277373;
+  --color-alumni-green: #22733F;
+  --color-alumni-yellow: #D9C14A;
+  --color-alumni-red: #F24444;
+}
