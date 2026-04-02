@@ -12,7 +12,7 @@
 
 ## 2. Quêtes et navigation principale
 
-* [ ] Page hub des quêtes
+* [x] Page hub des quêtes
   * Objectif : centraliser toutes les quêtes disponibles
   * Contenu attendu : catégories de quêtes, progression, statut, accès aux fiches détaillées
 

@@ -248,15 +248,216 @@ const Onboarding = ({ onFinish }: { onFinish: () => void }) => {
   );
 };
 
-const Dashboard = () => (
+const DashboardContent = ({ onNavigate }: { onNavigate: (view: string) => void }) => (
+  <div className="space-y-8">
+    {/* Overview / Points */}
+    <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div>
+        <h2 className="text-2xl font-bold text-gray-900">Bonjour, Jean ! 👋</h2>
+        <p className="text-gray-600 mt-1">Vous êtes à <span className="font-bold text-alumni-petrol">250 points</span> de votre prochaine récompense.</p>
+      </div>
+      <div className="flex gap-4 w-full md:w-auto">
+        <button className="flex-1 md:flex-none bg-alumni-yellow text-[#1F1F1F] px-6 py-3 rounded-xl font-medium hover:bg-alumni-yellow/90 transition-colors flex items-center justify-center gap-2 shadow-sm">
+          <Gift className="h-5 w-5" />
+          Voir les récompenses
+        </button>
+      </div>
+    </section>
+
+    {/* Quick Actions */}
+    <section>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-bold text-gray-900">Actions rapides</h3>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:border-alumni-petrol transition-colors cursor-pointer group">
+          <div className="h-10 w-10 bg-alumni-petrol/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-alumni-petrol/20 transition-colors">
+            <Share2 className="h-5 w-5 text-alumni-petrol" />
+          </div>
+          <h4 className="font-bold text-gray-900">Partager sur LinkedIn</h4>
+          <p className="text-sm text-gray-500 mt-1 mb-3">Relayez l'actualité de l'école.</p>
+          <div className="flex items-center text-sm font-medium text-alumni-green">
+            + 50 pts
+          </div>
+        </div>
+        
+        <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:border-alumni-petrol transition-colors cursor-pointer group">
+          <div className="h-10 w-10 bg-alumni-petrol/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-alumni-petrol/20 transition-colors">
+            <Users className="h-5 w-5 text-alumni-petrol" />
+          </div>
+          <h4 className="font-bold text-gray-900">Parrainer un étudiant</h4>
+          <p className="text-sm text-gray-500 mt-1 mb-3">Recommandez notre formation.</p>
+          <div className="flex items-center text-sm font-medium text-alumni-green">
+            + 500 pts
+          </div>
+        </div>
+
+        <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:border-alumni-petrol transition-colors cursor-pointer group">
+          <div className="h-10 w-10 bg-alumni-petrol/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-alumni-petrol/20 transition-colors">
+            <Mic className="h-5 w-5 text-alumni-petrol" />
+          </div>
+          <h4 className="font-bold text-gray-900">Animer une conférence</h4>
+          <p className="text-sm text-gray-500 mt-1 mb-3">Partagez votre expertise.</p>
+          <div className="flex items-center text-sm font-medium text-alumni-green">
+            + 300 pts
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Recommended Quests */}
+    <section>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-bold text-gray-900">Quêtes recommandées</h3>
+        <button onClick={() => onNavigate('quests')} className="text-sm font-medium text-alumni-blue hover:text-alumni-blue/80 flex items-center">
+          Voir tout <ArrowRight className="h-4 w-4 ml-1" />
+        </button>
+      </div>
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="divide-y divide-gray-100">
+          {[
+            { title: "Mettre à jour son profil", desc: "Ajoutez votre poste actuel et votre entreprise.", pts: 20, icon: <Briefcase className="h-5 w-5 text-gray-400" /> },
+            { title: "Participer au Job Dating", desc: "Venez recruter nos futurs diplômés lors de l'événement annuel.", pts: 150, icon: <Users className="h-5 w-5 text-gray-400" /> },
+          ].map((quest, i) => (
+            <div key={i} className="p-4 flex items-center justify-between hover:bg-gray-50 transition-colors cursor-pointer">
+              <div className="flex items-center gap-4">
+                <div className="h-10 w-10 bg-gray-100 rounded-full flex items-center justify-center shrink-0">
+                  {quest.icon}
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-900">{quest.title}</h4>
+                  <p className="text-sm text-gray-500 line-clamp-1">{quest.desc}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4 ml-4 shrink-0">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-alumni-green/10 text-alumni-green">
+                  +{quest.pts} pts
+                </span>
+                <ChevronRight className="h-5 w-5 text-gray-400" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  </div>
+);
+
+const QuestsHub = () => {
+  const categories = [
+    {
+      title: "Réseaux sociaux",
+      description: "Partagez l'actualité de l'école et valorisez votre diplôme sur LinkedIn, Twitter, etc.",
+      icon: <Share2 className="h-6 w-6 text-alumni-petrol" />,
+      available: 3,
+      completed: 12
+    },
+    {
+      title: "Conférences & Événements",
+      description: "Prenez la parole, participez aux tables rondes et partagez votre expérience.",
+      icon: <Mic className="h-6 w-6 text-alumni-petrol" />,
+      available: 2,
+      completed: 1
+    },
+    {
+      title: "Vie de l'école",
+      description: "Devenez mentor, participez aux jurys ou aidez les étudiants entrepreneurs.",
+      icon: <GraduationCap className="h-6 w-6 text-alumni-petrol" />,
+      available: 5,
+      completed: 3
+    },
+    {
+      title: "Referral (Parrainage)",
+      description: "Recommandez nos formations à votre réseau et gagnez des récompenses exclusives.",
+      icon: <Users className="h-6 w-6 text-alumni-petrol" />,
+      available: 1,
+      completed: 0
+    }
+  ];
+
+  return (
+    <div className="space-y-8">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Hub des quêtes</h2>
+          <p className="text-gray-600 mt-1">Découvrez toutes les missions disponibles pour vous engager et gagner des points.</p>
+        </div>
+        <div className="flex gap-4 text-sm">
+          <div className="bg-white px-4 py-2 rounded-lg border border-gray-100 shadow-sm">
+            <span className="text-gray-500">En cours :</span> <span className="font-bold text-alumni-blue">11 quêtes</span>
+          </div>
+          <div className="bg-white px-4 py-2 rounded-lg border border-gray-100 shadow-sm">
+            <span className="text-gray-500">Terminées :</span> <span className="font-bold text-alumni-green">16 quêtes</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {categories.map((cat, idx) => (
+          <div key={idx} className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all cursor-pointer group overflow-hidden flex flex-col">
+            <div className="p-6 flex-1">
+              <div className="flex items-start justify-between mb-4">
+                <div className="h-12 w-12 bg-alumni-petrol/10 rounded-xl flex items-center justify-center group-hover:bg-alumni-petrol/20 transition-colors">
+                  {cat.icon}
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-alumni-blue">
+                    {cat.available} disponibles
+                  </span>
+                </div>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-alumni-blue transition-colors">{cat.title}</h3>
+              <p className="text-gray-600 text-sm leading-relaxed">{cat.description}</p>
+            </div>
+            <div className="bg-gray-50 px-6 py-4 border-t border-gray-100 flex items-center justify-between mt-auto">
+              <span className="text-sm font-medium text-gray-500">
+                {cat.completed} quête{cat.completed > 1 ? 's' : ''} accomplie{cat.completed > 1 ? 's' : ''}
+              </span>
+              <span className="text-sm font-bold text-alumni-blue flex items-center group-hover:translate-x-1 transition-transform">
+                Voir les quêtes <ArrowRight className="ml-1 h-4 w-4" />
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const MainLayout = ({ children, currentTab, setCurrentTab }: { children: React.ReactNode, currentTab: string, setCurrentTab: (tab: string) => void }) => (
   <div className="min-h-screen bg-gray-50">
     {/* Header */}
     <header className="bg-alumni-blue text-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <GraduationCap className="h-8 w-8 text-white" />
-          <h1 className="text-xl font-bold hidden sm:block">Portail Alumni</h1>
+        <div className="flex items-center gap-8">
+          <div className="flex items-center gap-2">
+            <GraduationCap className="h-8 w-8 text-white" />
+            <h1 className="text-xl font-bold hidden sm:block">Portail Alumni</h1>
+          </div>
+          
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-1">
+            <button 
+              onClick={() => setCurrentTab('dashboard')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${currentTab === 'dashboard' ? 'bg-white/20 text-white' : 'text-white/80 hover:bg-white/10 hover:text-white'}`}
+            >
+              Dashboard
+            </button>
+            <button 
+              onClick={() => setCurrentTab('quests')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${currentTab === 'quests' ? 'bg-white/20 text-white' : 'text-white/80 hover:bg-white/10 hover:text-white'}`}
+            >
+              Quêtes
+            </button>
+            <button 
+              onClick={() => setCurrentTab('rewards')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${currentTab === 'rewards' ? 'bg-white/20 text-white' : 'text-white/80 hover:bg-white/10 hover:text-white'}`}
+            >
+              Récompenses
+            </button>
+          </nav>
         </div>
+
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 bg-white/10 px-4 py-1.5 rounded-full">
             <Trophy className="h-5 w-5 text-alumni-yellow" />
@@ -269,109 +470,57 @@ const Dashboard = () => (
       </div>
     </header>
 
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      {/* Overview / Points */}
-      <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col md:flex-row items-center justify-between gap-6">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900">Bonjour, Jean ! 👋</h2>
-          <p className="text-gray-600 mt-1">Vous êtes à <span className="font-bold text-alumni-petrol">250 points</span> de votre prochaine récompense.</p>
-        </div>
-        <div className="flex gap-4 w-full md:w-auto">
-          <button className="flex-1 md:flex-none bg-alumni-yellow text-[#1F1F1F] px-6 py-3 rounded-xl font-medium hover:bg-alumni-yellow/90 transition-colors flex items-center justify-center gap-2 shadow-sm">
-            <Gift className="h-5 w-5" />
-            Voir les récompenses
-          </button>
-        </div>
-      </section>
+    {/* Mobile Navigation */}
+    <div className="md:hidden bg-white border-b border-gray-200">
+      <nav className="flex overflow-x-auto">
+        <button 
+          onClick={() => setCurrentTab('dashboard')}
+          className={`flex-1 py-3 px-4 text-center text-sm font-medium border-b-2 whitespace-nowrap ${currentTab === 'dashboard' ? 'border-alumni-blue text-alumni-blue' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+        >
+          Dashboard
+        </button>
+        <button 
+          onClick={() => setCurrentTab('quests')}
+          className={`flex-1 py-3 px-4 text-center text-sm font-medium border-b-2 whitespace-nowrap ${currentTab === 'quests' ? 'border-alumni-blue text-alumni-blue' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+        >
+          Quêtes
+        </button>
+        <button 
+          onClick={() => setCurrentTab('rewards')}
+          className={`flex-1 py-3 px-4 text-center text-sm font-medium border-b-2 whitespace-nowrap ${currentTab === 'rewards' ? 'border-alumni-blue text-alumni-blue' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+        >
+          Récompenses
+        </button>
+      </nav>
+    </div>
 
-      {/* Quick Actions */}
-      <section>
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-bold text-gray-900">Actions rapides</h3>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:border-alumni-petrol transition-colors cursor-pointer group">
-            <div className="h-10 w-10 bg-alumni-petrol/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-alumni-petrol/20 transition-colors">
-              <Share2 className="h-5 w-5 text-alumni-petrol" />
-            </div>
-            <h4 className="font-bold text-gray-900">Partager sur LinkedIn</h4>
-            <p className="text-sm text-gray-500 mt-1 mb-3">Relayez l'actualité de l'école.</p>
-            <div className="flex items-center text-sm font-medium text-alumni-green">
-              + 50 pts
-            </div>
-          </div>
-          
-          <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:border-alumni-petrol transition-colors cursor-pointer group">
-            <div className="h-10 w-10 bg-alumni-petrol/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-alumni-petrol/20 transition-colors">
-              <Users className="h-5 w-5 text-alumni-petrol" />
-            </div>
-            <h4 className="font-bold text-gray-900">Parrainer un étudiant</h4>
-            <p className="text-sm text-gray-500 mt-1 mb-3">Recommandez notre formation.</p>
-            <div className="flex items-center text-sm font-medium text-alumni-green">
-              + 500 pts
-            </div>
-          </div>
-
-          <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm hover:border-alumni-petrol transition-colors cursor-pointer group">
-            <div className="h-10 w-10 bg-alumni-petrol/10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-alumni-petrol/20 transition-colors">
-              <Mic className="h-5 w-5 text-alumni-petrol" />
-            </div>
-            <h4 className="font-bold text-gray-900">Animer une conférence</h4>
-            <p className="text-sm text-gray-500 mt-1 mb-3">Partagez votre expertise.</p>
-            <div className="flex items-center text-sm font-medium text-alumni-green">
-              + 300 pts
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Recommended Quests */}
-      <section>
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-bold text-gray-900">Quêtes recommandées</h3>
-          <button className="text-sm font-medium text-alumni-blue hover:text-alumni-blue/80 flex items-center">
-            Voir tout <ArrowRight className="h-4 w-4 ml-1" />
-          </button>
-        </div>
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-          <div className="divide-y divide-gray-100">
-            {[
-              { title: "Mettre à jour son profil", desc: "Ajoutez votre poste actuel et votre entreprise.", pts: 20, icon: <Briefcase className="h-5 w-5 text-gray-400" /> },
-              { title: "Participer au Job Dating", desc: "Venez recruter nos futurs diplômés lors de l'événement annuel.", pts: 150, icon: <Users className="h-5 w-5 text-gray-400" /> },
-            ].map((quest, i) => (
-              <div key={i} className="p-4 flex items-center justify-between hover:bg-gray-50 transition-colors cursor-pointer">
-                <div className="flex items-center gap-4">
-                  <div className="h-10 w-10 bg-gray-100 rounded-full flex items-center justify-center shrink-0">
-                    {quest.icon}
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900">{quest.title}</h4>
-                    <p className="text-sm text-gray-500 line-clamp-1">{quest.desc}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4 ml-4 shrink-0">
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-alumni-green/10 text-alumni-green">
-                    +{quest.pts} pts
-                  </span>
-                  <ChevronRight className="h-5 w-5 text-gray-400" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {children}
     </main>
   </div>
 );
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<'login' | 'onboarding' | 'dashboard'>('login');
+  const [currentView, setCurrentView] = useState<'login' | 'onboarding' | 'app'>('login');
+  const [currentTab, setCurrentTab] = useState('dashboard');
 
   return (
     <>
       {currentView === 'login' && <Login onLogin={() => setCurrentView('onboarding')} />}
-      {currentView === 'onboarding' && <Onboarding onFinish={() => setCurrentView('dashboard')} />}
-      {currentView === 'dashboard' && <Dashboard />}
+      {currentView === 'onboarding' && <Onboarding onFinish={() => setCurrentView('app')} />}
+      {currentView === 'app' && (
+        <MainLayout currentTab={currentTab} setCurrentTab={setCurrentTab}>
+          {currentTab === 'dashboard' && <DashboardContent onNavigate={setCurrentTab} />}
+          {currentTab === 'quests' && <QuestsHub />}
+          {currentTab === 'rewards' && (
+            <div className="bg-white p-8 rounded-2xl shadow-sm text-center border border-gray-100">
+              <Gift className="w-12 h-12 text-alumni-yellow mx-auto mb-4" />
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Récompenses</h2>
+              <p className="text-gray-600">L'espace récompenses est en cours de construction.</p>
+            </div>
+          )}
+        </MainLayout>
+      )}
     </>
   );
 }
